@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
         _cinemachineFollow.FollowOffset = Vector3.Lerp(
             _cinemachineFollow.FollowOffset,
             _targetFollorOffset,
-            Time.deltaTime);
+            Time.deltaTime * zoomSpped);        
     }
 
     private void HandleRotation()

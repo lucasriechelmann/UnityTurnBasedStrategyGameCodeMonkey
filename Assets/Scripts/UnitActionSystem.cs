@@ -20,8 +20,7 @@ public class UnitActionSystem : MonoBehaviour
         Instance = this;
     }
     void Update()
-    {
-        
+    {        
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -30,8 +29,14 @@ public class UnitActionSystem : MonoBehaviour
             if (unitHasBeenSelected)
                 return;
 
-            _selectedUnit?.Move(MouseWorld.GetPosition());
-        }
+            GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
+
+            if(_selectedUnit?.GetMoveAction()?.IsValidActionGridPosition(gridPosition) ?? false)
+            {
+                _selectedUnit?.GetMoveAction()?.Move(gridPosition);
+            }
+            
+        }        
     }
     bool TryHandleUnitSelection()
     {
@@ -50,7 +55,7 @@ public class UnitActionSystem : MonoBehaviour
     void SetSelectedUnit(Unit unit)
     {
         _selectedUnit = unit;
-        OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);
+        OnSelectedUnitChanged?.Invoke(this, EventArgs.Empty);                
     }
     public Unit GetSelectedUnit() => _selectedUnit;
 }

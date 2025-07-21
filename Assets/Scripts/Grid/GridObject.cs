@@ -36,4 +36,5 @@ public class GridObject
         }
         return sb.ToString();
     }
+    public bool HasAnyUnit() => _units.Count > 0;
 }
