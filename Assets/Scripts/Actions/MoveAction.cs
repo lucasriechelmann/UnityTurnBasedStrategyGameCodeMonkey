@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Unit))]
-public class MoveAction : MonoBehaviour
+public class MoveAction : BaseAction
 {
     [SerializeField]
     Animator _unitAnimator;
@@ -11,14 +11,14 @@ public class MoveAction : MonoBehaviour
     int _maxMoveDistance = 4;
     const string IS_WALKING = "IsWalking";
     Vector3 _targetPosition;
-    Unit _unit;
-    void Awake()
+    protected override void OnAwake()
     {
-        _unit = GetComponent<Unit>();
+        base.OnAwake();
         _targetPosition = transform.position;
     }
-    void Update()
+    protected override void OnUpdate()
     {
+        base.OnUpdate();
         MoveUnit();
     }
     void MoveUnit()
@@ -37,10 +37,12 @@ public class MoveAction : MonoBehaviour
 
         _unitAnimator.SetBool(IS_WALKING, false);
         transform.position = _targetPosition;
+        _isActive = false;
     }
     public void Move(GridPosition gridPosition)
     {
         _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        _isActive = true;
     }
     public bool IsValidActionGridPosition(GridPosition gridPosition) => GetValidActionGridPositionList().Contains(gridPosition);
     public List<GridPosition> GetValidActionGridPositionList()
