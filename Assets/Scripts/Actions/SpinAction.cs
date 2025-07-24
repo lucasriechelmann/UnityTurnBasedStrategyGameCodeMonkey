@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Unit))]
@@ -20,12 +22,18 @@ public class SpinAction : BaseAction
         {
             _isActive = false;
             transform.eulerAngles = _startPosition;
+            _onActionComplete?.Invoke();
         }
     }
-    public void Spin()
+    protected override void OnActionExecuted(GridPosition gridPosition)
     {
         _isActive = true;
         _totalSpinAmount = 0f;
         _startPosition = transform.eulerAngles;
     }
+    public override List<GridPosition> GetValidActionGridPositionList() => new()
+    {
+        _unit.GetGridPosition()
+    };
+    public override string GetActionName() => "Spin";
 }

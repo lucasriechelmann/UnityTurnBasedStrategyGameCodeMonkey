@@ -6,10 +6,12 @@ public class Unit : MonoBehaviour
     GridPosition _currentGridPosition;
     MoveAction _moveAction;
     SpinAction _spinAction;
+    BaseAction[] _baseActionArray;
     void Awake()
     {
         _moveAction = GetComponent<MoveAction>();
         _spinAction = GetComponent<SpinAction>();
+        _baseActionArray = GetComponents<BaseAction>();
     }
     void Start()
     {
@@ -28,4 +30,5 @@ public class Unit : MonoBehaviour
     public MoveAction GetMoveAction() => _moveAction;
     public SpinAction GetSpinAction() => _spinAction;
     public GridPosition GetGridPosition() => _currentGridPosition;
+    public BaseAction[] GetBaseActionArray() => _baseActionArray;
 }

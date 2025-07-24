@@ -38,14 +38,14 @@ public class MoveAction : BaseAction
         _unitAnimator.SetBool(IS_WALKING, false);
         transform.position = _targetPosition;
         _isActive = false;
+        _onActionComplete?.Invoke();
     }
-    public void Move(GridPosition gridPosition)
-    {
+    protected override void OnActionExecuted(GridPosition gridPosition)
+    {        
         _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         _isActive = true;
     }
-    public bool IsValidActionGridPosition(GridPosition gridPosition) => GetValidActionGridPositionList().Contains(gridPosition);
-    public List<GridPosition> GetValidActionGridPositionList()
+    public override List<GridPosition> GetValidActionGridPositionList()
     {
         List<GridPosition> validGridPositionList = new();
         GridPosition unitGridPosition = _unit.GetGridPosition();
@@ -67,4 +67,5 @@ public class MoveAction : BaseAction
 
         return validGridPositionList;
     }
+    public override string GetActionName() => "Move";
 }
