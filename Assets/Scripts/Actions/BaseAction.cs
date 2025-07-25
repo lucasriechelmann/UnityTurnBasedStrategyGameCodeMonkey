@@ -32,16 +32,10 @@ public abstract class BaseAction : MonoBehaviour
     public void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
         _onActionComplete = onActionComplete;
-
-        if (!IsValidActionGridPosition(gridPosition))
-        {
-            _onActionComplete?.Invoke();
-            return;
-        }
-
         OnActionExecuted(gridPosition);
     }
     protected abstract void OnActionExecuted(GridPosition gridPosition);
     public virtual bool IsValidActionGridPosition(GridPosition gridPosition) => GetValidActionGridPositionList().Contains(gridPosition);
     public abstract List<GridPosition> GetValidActionGridPositionList();
+    public virtual int GetActionPointsCost() => 1;
 }

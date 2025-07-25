@@ -8,6 +8,7 @@ public class UnitActionSystem : MonoBehaviour
     public event EventHandler OnSelectedUnitChanged;
     public event EventHandler OnSelectedActionChanged;
     public event EventHandler<bool> OnBusyChanged;
+    public event EventHandler OnActionStarted;
     [SerializeField]
     Unit _selectedUnit;
     [SerializeField]
@@ -26,7 +27,7 @@ public class UnitActionSystem : MonoBehaviour
     }
     void Update()
     {        
-        if(_isBusy || EventSystem.current.IsPointerOverGameObject())
+        if(_isBusy || EventSystem.current.IsPointerOverGameObject() || !TurnSystem.Instance.IsPlayerTurn())
             return;
 
         if (TryHandleUnitSelection())
@@ -36,11 +37,23 @@ public class UnitActionSystem : MonoBehaviour
     }
     void HandleSelectedAction()
     {
+        if (_selectedUnit == null || _selectedAction == null)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
-            SetBusy();
             GridPosition gridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
-            _selectedAction?.TakeAction(gridPosition, ClearBusy);            
+
+            if (!_selectedAction.IsValidActionGridPosition(gridPosition))
+                return;
+
+            if (!_selectedUnit.TrySpendingActionPointsToTakeAction(_selectedAction))
+                return;
+
+            SetBusy();
+            
+            _selectedAction?.TakeAction(gridPosition, ClearBusy);    
+            OnActionStarted?.Invoke(this, EventArgs.Empty);
         }
     }
     void SetBusy()
@@ -63,6 +76,9 @@ public class UnitActionSystem : MonoBehaviour
                 if (hitInfo.collider.TryGetComponent<Unit>(out Unit unit))
                 {
                     if(_selectedUnit == unit)
+                        return false;
+
+                    if (unit.IsEnemy())
                         return false;
 
                     SetSelectedUnit(unit);
