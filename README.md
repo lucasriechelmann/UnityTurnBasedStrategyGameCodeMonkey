@@ -1,4 +1,5 @@
 ![Code Monkey Logo](https://unitycodemonkey.com/images/CodeMonkeyLogo_Award.png)
+
 Turn Based Strategy from Code Monkey
 This project is a result of following the "Turn Based Strategy" course by Code Monkey.
 
