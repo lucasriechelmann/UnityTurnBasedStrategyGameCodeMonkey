@@ -19,15 +19,13 @@ public class SpinAction : BaseAction
         _totalSpinAmount += spinAddAmount;
 
         if (_totalSpinAmount >= 360f)
-        {
-            _isActive = false;
+        {            
             transform.eulerAngles = _startPosition;
-            _onActionComplete?.Invoke();
+            ActionEnd();
         }
     }
     protected override void OnActionExecuted(GridPosition gridPosition)
     {
-        _isActive = true;
         _totalSpinAmount = 0f;
         _startPosition = transform.eulerAngles;
     }

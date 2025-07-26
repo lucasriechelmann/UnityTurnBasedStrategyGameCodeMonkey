@@ -31,11 +31,22 @@ public abstract class BaseAction : MonoBehaviour
     public abstract string GetActionName();
     public void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        _onActionComplete = onActionComplete;
+        ActionStart(onActionComplete);
         OnActionExecuted(gridPosition);
     }
     protected abstract void OnActionExecuted(GridPosition gridPosition);
     public virtual bool IsValidActionGridPosition(GridPosition gridPosition) => GetValidActionGridPositionList().Contains(gridPosition);
     public abstract List<GridPosition> GetValidActionGridPositionList();
     public virtual int GetActionPointsCost() => 1;
+    protected virtual void ActionStart(Action onActionComplete)
+    {
+        _isActive = true;
+        _onActionComplete = onActionComplete;
+    }
+    protected virtual void ActionEnd()
+    {
+        _isActive = false;
+        _onActionComplete?.Invoke();
+        _onActionComplete = null;
+    }
 }

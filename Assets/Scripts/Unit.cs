@@ -36,6 +36,7 @@ public class Unit : MonoBehaviour
     public MoveAction GetMoveAction() => _moveAction;
     public SpinAction GetSpinAction() => _spinAction;
     public GridPosition GetGridPosition() => _currentGridPosition;
+    public Vector3 GetWorldPosition() => transform.position;
     public BaseAction[] GetBaseActionArray() => _baseActionArray;
     public bool TrySpendingActionPointsToTakeAction(BaseAction action)
     {
@@ -70,4 +71,8 @@ public class Unit : MonoBehaviour
     bool ShouldUpdateActionPoints() => (IsEnemy() && !TurnSystem.Instance.IsPlayerTurn()) ||
                (!IsEnemy() && TurnSystem.Instance.IsPlayerTurn());
     public bool IsEnemy() => _isEnemy;
+    public void Damage()
+    {
+        Debug.Log(IsEnemy() ? "Enemy damaged!" : "Player damaged!");
+    }
 }

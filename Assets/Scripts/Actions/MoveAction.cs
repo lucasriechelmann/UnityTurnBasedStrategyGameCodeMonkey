@@ -37,13 +37,11 @@ public class MoveAction : BaseAction
 
         _unitAnimator.SetBool(IS_WALKING, false);
         transform.position = _targetPosition;
-        _isActive = false;
-        _onActionComplete?.Invoke();
+        ActionEnd();
     }
     protected override void OnActionExecuted(GridPosition gridPosition)
     {        
         _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-        _isActive = true;
     }
     public override List<GridPosition> GetValidActionGridPositionList()
     {
